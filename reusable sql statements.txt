@@ -19,7 +19,7 @@ SELECT * FROM posts ORDER BY id ASC;
 
 SELECT * FROM posts ORDER BY subject DESC;
 
---------------------------------Login system ---------------------------------
+-------------------------Login system ---------------------------------------
 
 CREATE TABLE users (
 	user_id int(11) AUTO_INCREMENT PRIMARY KEY not null,
@@ -33,3 +33,18 @@ CREATE TABLE users (
 INSERT INTO users (user_first, user_last, user_email, user_uid, user_pwd) VALUES ('Carol', 'Mbithe', 'carol@gmail.com', 'admin', 'test123');
 
 INSERT INTO users (user_first, user_last, user_email, user_uid, user_pwd) VALUES ('Jackie', 'Chan', 'jackie@gmail.com', 'jackie67', 'test1234');
+
+-------------------------------------------------------------------------------
+
+<!-- this is php code for fetching data from db & displaying it into our website. don't forget to include dbh.inc.php at the top of the page within php tags
+
+include_once 'dbh.inc.php';
+
+$sql = "SELECT * FROM users;";
+$result = mysqli_query($conn, $sql);
+$resultCheck = mysqli_num_rows($result);
+if ($resultCheck > 0) {
+  while ($row = mysqli_fetch_assoc($result)) {
+    echo $row['user_uid'] . "<br>";
+  }
+} -->
