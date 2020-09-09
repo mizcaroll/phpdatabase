@@ -1,3 +1,6 @@
+<?php
+include_once 'includes/dbh.inc.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,6 +11,7 @@
   <title>PHPdatabase</title>
 </head>
 <body>
+
 <form action="includes/signup.inc.php" method="POST">
 <input type="text" name="first" placeholder="Firstname">
 <br>
@@ -21,7 +25,6 @@
 <br>
 <button type="submit" name="submit">Sign up</button>
 </form>
-
 
 </body>
 </html>

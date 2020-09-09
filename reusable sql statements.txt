@@ -36,9 +36,9 @@ INSERT INTO users (user_first, user_last, user_email, user_uid, user_pwd) VALUES
 
 -------------------------------------------------------------------------------
 
-<!-- this is php code for fetching data from db & displaying it into our website. don't forget to include dbh.inc.php at the top of the page within php tags
+<!-- this is basic php code for fetching/selecting data from db & displaying it into our website. don't forget to include dbh.inc.php at the top of the page within php tags
 
-include_once 'dbh.inc.php';
+include_once 'includes/dbh.inc.php';
 
 $sql = "SELECT * FROM users;";
 $result = mysqli_query($conn, $sql);
@@ -49,7 +49,37 @@ if ($resultCheck > 0) {
   }
 } -->
 
----------signup php-msqli code for escaping input characters to protect the db from sql injection -------------
+--------------------------------------------------------------------------------------------------------------
+
+SELECTING DATA FROM DB INTO OUR WEBSITE USING PREPARED STATEMTNTS. (SAFER against sql insjection). don't forget to include dbh.inc.php at the top of the page within php tags
+
+include_once 'dbh.inc.php';
+
+<?php
+$data = "admin";
+//Created a template
+$sql = "SELECT * FROM users WHERE user_uid=?;";
+//create a prepared statement
+$stmt = mysqli_stmt_init($conn);
+//Prepare the statement
+if (!mysqli_stmt_prepare($stmt, $sql)) {
+echo "SQL statement failed.";
+} else {
+  //Bind parameters to the placeholder
+  mysqli_stmt_bind_param($stmt, "s", $data);
+//Run parameters inside database
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+while ($row = mysqli_fetch_assoc($result)) {
+  echo $row['user_uid'] . "<br>";
+}
+}  
+?>
+
+
+----------------------------------------------------------INSERTING DATA INTO DB (SIGNUP) MSQLI CODE for escaping input characters to protect the db from sql injection. (NB prepared statements are another alternative that are safer to use than bare msqli) ----------------------------------------
+
 <?php
 include_once 'dbh.inc.php';
 
@@ -65,5 +95,47 @@ mysqli_query($conn, $sql);
 header("Location: ../index.php?signup=success");
 ?>
 
---------------------NB prepared statements are another alternative that are safer to use than msqli--------------------------------------------------------------------------------
 
+--------------------------------------------------------INSERTING DATA INTO DB. (PREPARED STATEMENTS) signup.inc.php)
+-------------------------------------------------------
+
+<?php
+include_once 'dbh.inc.php';
+
+$first = mysqli_real_escape_string($conn, $_POST['first']);
+$last = mysqli_real_escape_string($conn, $_POST['last']);
+$email =mysqli_real_escape_string($conn, $_POST['email']);
+$uid = mysqli_real_escape_string($conn, $_POST['uid']);
+$pwd = mysqli_real_escape_string($conn, $_POST['pwd']);
+
+$sql = "INSERT INTO users (user_first, user_last, user_email, user_uid, user_pwd) VALUES ('?', '?', '?', '?', '?');";
+
+$stmt = mysqli_stmt_init($conn);
+if (!mysqli_stmt_prepare($stmt, $sql)) {
+  echo "SQL error";
+} else {
+mysqli_stmt_bind_param($stmt, "sssss", $first, $last, $email, $uid, $pwd);
+mysqli_stmt_execute($stmt);
+}
+
+header("Location: ../index.php?signup=success");
+
+
+-------------------------------------------------
+-----------------------------------signup form html code----------------------------------------------
+
+<form action="includes/signup.inc.php" method="POST">
+<input type="text" name="first" placeholder="Firstname">
+<br>
+<input type="text" name="last" placeholder="Lastname">
+<br>
+<input type="text" name="email" placeholder="E-mail">
+<br>
+<input type="text" name="uid" placeholder="Username">
+<br>
+<input type="password" name="pwd" placeholder="Password">
+<br>
+<button type="submit" name="submit">Sign up</button>
+</form>
+
+--------------------------------------------------------------------------------------------------------------
