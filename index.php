@@ -11,8 +11,8 @@ include_once 'includes/dbh.inc.php';
   <title>PHPdatabase</title>
 </head>
 <body>
-
-<form action="includes/signup.inc.php" method="POST">
+<h2>Sign Up</h2>
+<form action="includes/signup2.inc.php" method="POST">
 <input type="text" name="first" placeholder="Firstname">
 <br>
 <input type="text" name="last" placeholder="Lastname">
