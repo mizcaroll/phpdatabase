@@ -138,4 +138,247 @@ header("Location: ../index.php?signup=success");
 <button type="submit" name="submit">Sign up</button>
 </form>
 
---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------ADVANCED ERROR HANDLING METHOD 1 - signup.inc file --------------------------------------------------
+
+<?php
+//error handling script + uploading to the database
+
+//check if user has clicked the signup button
+if (isset($_POST['submit'])) {
+
+  //include the database connection
+include_once 'dbh.inc.php';
+
+//get the data from the signup form
+$first = mysqli_real_escape_string($conn, $_POST['first']);
+$last = mysqli_real_escape_string($conn, $_POST['last']);
+$email =mysqli_real_escape_string($conn, $_POST['email']);
+$uid = mysqli_real_escape_string($conn, $_POST['uid']);
+$pwd = mysqli_real_escape_string($conn, $_POST['pwd']);
+
+//check whether inputs are empty
+if (empty($first) || empty($last) || empty($email) || empty($uid) || empty($pwd)) {
+  header("Location: ../index.php?signup=empty");
+  exit();
+} else {
+
+  //check if input characters are valid
+if (!preg_match("/^[a-zA-Z]*$/", $first) || !preg_match("/^[a-zA-Z]*$/", $last)) {
+  header("Location: ../index.php?signup=char");
+  exit(); 
+} else {
+
+//check if email is valid
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+  header("Location: ../index.php?signup=email");
+} else {
+
+  //signup successfully
+  $sql = "INSERT INTO users (user_first, user_last, user_email, user_uid, user_pwd) VALUES (?, ?, ?, ?, ?);";
+
+$stmt = mysqli_stmt_init($conn);
+if (!mysqli_stmt_prepare($stmt, $sql)) {
+  echo "SQL error";
+} else {
+mysqli_stmt_bind_param($stmt, "sssss", $first, $last, $email, $uid, $pwd);
+mysqli_stmt_execute($stmt);
+}
+  header("Location: ../index.php?signup=success");
+  exit();
+}
+}
+}
+}
+else {
+  header("Location: ../index.php?signup=error");
+  exit();
+}
+
+---------------------------------------------------------------------------------------------------------------
+AVANCED ERROR HANDLING METHOD 1 - index.php FORM --------------------------------------------------------
+
+<?php
+include_once 'includes/dbh.inc.php';
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" rel="stylesheet" href="styles.css">
+  <title>PHPdatabase</title>
+</head>
+<body>
+ 
+<h2>Sign Up</h2>
+<form action="includes/signup2.inc.php" method="POST">
+<input type="text" name="first" placeholder="Firstname">
+<br>
+<input type="text" name="last" placeholder="Lastname">
+<br>
+<input type="text" name="email" placeholder="E-mail">
+<br>
+<input type="text" name="uid" placeholder="Username">
+<br>
+<input type="password" name="pwd" placeholder="Password">
+<br>
+<button type="submit" name="submit">Sign up</button>
+</form>
+<?php
+$fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+if (strpos($fullUrl, "signup=empty") == true) {
+  echo "<p class='error'>Please fill in all fields!</p>";
+  exit();
+}
+elseif (strpos($fullUrl, "signup=char") == true) {
+  echo "<p class='error'>Please use valid characters!</p>";
+  exit();
+}
+elseif (strpos($fullUrl, "signup=email") == true) {
+  echo "<p class='error'>Please use a valid e-mail address!</p>";
+  exit();
+}
+elseif (strpos($fullUrl, "signup=success") == true) {
+  echo "<p class='success'>You have been signed up successfully!</p>";
+  exit();
+}
+?>
+</body>
+</html>
+
+-------------------------------------------------------------------------------------------------------------------- ADVANCED ERROR HANDLING METHOD 2 - signupi.inc file form ( with edits to save previuosly typed names and uid when the email is incorrect)----------------------------------------------------
+
+<?php
+//error handling script + uploading to the database
+
+//check if user has clicked the signup button
+if (isset($_POST['submit'])) {
+
+  //include the database connection
+include_once 'dbh.inc.php';
+
+//get the data from the signup form
+$first = mysqli_real_escape_string($conn, $_POST['first']);
+$last = mysqli_real_escape_string($conn, $_POST['last']);
+$email =mysqli_real_escape_string($conn, $_POST['email']);
+$uid = mysqli_real_escape_string($conn, $_POST['uid']);
+$pwd = mysqli_real_escape_string($conn, $_POST['pwd']);
+
+//check whether inputs are empty
+if (empty($first) || empty($last) || empty($email) || empty($uid) || empty($pwd)) {
+  header("Location: ../index.php?signup=empty");
+  exit();
+} else {
+  //check if input characters are valid
+if (!preg_match("/^[a-zA-Z]*$/", $first) || !preg_match("/^[a-zA-Z]*$/", $last)) {
+  header("Location: ../index.php?signup=char");
+  exit(); 
+} else {
+//check if email is valid
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+  header("Location: ../index.php?signup=email&first=$first&last=$last&uid=$uid");
+  exit();
+} else {
+  //signup successfully
+  $sql = "INSERT INTO users (user_first, user_last, user_email, user_uid, user_pwd) VALUES (?, ?, ?, ?, ?);";
+
+$stmt = mysqli_stmt_init($conn);
+if (!mysqli_stmt_prepare($stmt, $sql)) {
+  echo "SQL error";
+} else {
+mysqli_stmt_bind_param($stmt, "sssss", $first, $last, $email, $uid, $pwd);
+mysqli_stmt_execute($stmt);
+}
+  header("Location: ../index.php?signup=success");
+  exit();
+}
+}
+}
+}
+else {
+  header("Location: ../index.php?signup=error");
+  exit();
+}
+
+-------------------------------------------------------------------------------------------------------- ADVANCED ERROR HANDLING METHOD 2  - index.php file (uses the signupCheck variable to check for signup input errors with $_GET method )--------------------------------------------------------
+<?php
+include_once 'includes/dbh.inc.php';
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" rel="stylesheet" href="styles.css">
+  <title>PHPdatabase</title>
+</head>
+
+<body>
+<h2>Sign Up</h2>
+
+<form action="includes/signup2.inc.php" method="POST">
+
+<?php
+if (isset($_GET['first'])) {
+  $first =  $_GET['first'];
+  echo '<input type="text" name="first" placeholder="Firstname" value="'.$first.'"><br>';
+}
+else {
+  echo '<input type="text" name="first" placeholder="Firstname"><br>';
+}
+if (isset($_GET['last'])) {
+  $last =  $_GET['last'];
+  echo '<input type="text" name="last" placeholder="Lastname" value="'.$last.'"><br>';
+}
+else {
+  echo '<input type="text" name="last" placeholder="Lastname"><br>';
+}
+?>
+<input type="text" name="email" placeholder="E-mail">
+<br>
+<?php
+if (isset($_GET['uid'])) {
+  $uid =  $_GET['uid'];
+  echo '<input type="text" name="uid" placeholder="Username" value="'.$uid.'"><br>';
+}
+else {
+  echo '<input type="text" name="uid" placeholder="Username"><br>';
+}
+?>
+<input type="password" name="pwd" placeholder="Password">
+<br>
+<button type="submit" name="submit">Sign up</button>
+</form>
+
+<?php
+if (!isset($_GET['signup'])) {
+exit();
+}
+else {
+$signupCheck = $_GET['signup'];
+
+if ($signupCheck == "empty") {
+  echo "<p class='error'>Please fill in all fields!</p>";
+  exit();
+}
+elseif ($signupCheck == "char") {
+  echo "<p class='error'>Please make sure to use valid characters for your name!</p>";
+  exit();
+}
+elseif ($signupCheck == "email") {
+  echo "<p class='error'>Please enter a valid e-mail address!</p>";
+  exit();
+}
+elseif ($signupCheck == "success") {
+  echo "<p class='success'>You have been signed up successfully!</p>";
+  exit();
+}
+}
+?>
+</body>
+</html>
+
+---------------------------------------------------------------------------------------------------------------
