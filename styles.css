@@ -1,4 +1,17 @@
 body {
   background-color:lightblue;
-  color: darkslategray;
+  color: darkslategray; 
+}
+h2 {
+  text-align: center;
+}
+form {
+margin: 0 auto;
+width: 300px;
+}
+.error {
+  color: red;
+}
+.success {
+  color: green;
 }
