@@ -407,7 +407,7 @@ print_r($data);
 
 ?>
 
--------------------------------------------------------- INSERTING DATABASE RESULTS INTO AN ARRAY AND OUT TO OUR WEBSITE----NB. must include dbh.inc.php at top of index page-------------------------------------
+-------------------------------------------------------- INSERTING DATABASE RESULTS INTO AN ARRAY AND DISPLAYING IT OUT TO OUR WEBSITE----NB. must include dbh.inc.php at top of index page-------------------------------------
 
 <?php
 $sql = "SELECT * FROM data";
@@ -419,6 +419,7 @@ if (mysqli_num_rows($result) > 0) {
   }
 }
 //to get all the data within a specific column
+
 foreach ($datas as $data) {
 echo $data['texts']. " ";
 }
@@ -430,4 +431,25 @@ foreach ($datas[0] as $data) {
   echo $data;
   } )
 
-  -------------------------------------------------------------
+  -------------------------------------------------------------ASSOCIATIVE ARRAYS -----------------------------------------------------
+
+  //Associative arrays
+$data = array("first"=>"Jackie", "last"=>"Kefa", "age"=>32);
+echo $data["first"];
+
+//or can be declared as
+$data["first"] = "Jackie";
+$data["last"] = "Kefa";
+$data["age"] = 32;
+print_r($data);
+------------------------------------------------------------MULTIDIMENSIONAL ARRAYS -------------------------------------------------------
+
+<?php
+//Multidimensional arrays
+$data = array(array(1, 2, 3), "Jackie", "Kefa");
+
+echo $data[0][1];
+
+?>
+
+---------------------------------------------------------------------
