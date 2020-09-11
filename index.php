@@ -12,13 +12,18 @@ include_once 'includes/dbh.inc.php';
 </head>
 <body>
 <?php
-
-$data = array("first", "second");
-
-array_push($data, "Jackie", 15, "Kefa");
-
-print_r($data);
-
+$sql = "SELECT * FROM data";
+$result = mysqli_query($conn, $sql);
+$datas = array();
+if (mysqli_num_rows($result) > 0) {
+  while ($row = mysqli_fetch_assoc($result)) {
+    $datas[] = $row;
+  }
+}
+//to get all the data within a specific column
+foreach ($datas as $data) {
+echo $data['texts']. " ";
+}
 ?>
 </body>
 </html>

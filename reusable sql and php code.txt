@@ -396,4 +396,38 @@ echo password_verify($input, $hashedPwdInDb);
 
 ?>
 
---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------ADDING DATA INTO AARRAYS USING ARRAY_PUSH ---------------------------------------------------
+<?php
+
+$data = array("first", "second");
+
+array_push($data, "Jackie", 15, "Kefa");
+
+print_r($data);
+
+?>
+
+-------------------------------------------------------- INSERTING DATABASE RESULTS INTO AN ARRAY AND OUT TO OUR WEBSITE----NB. must include dbh.inc.php at top of index page-------------------------------------
+
+<?php
+$sql = "SELECT * FROM data";
+$result = mysqli_query($conn, $sql);
+$datas = array();
+if (mysqli_num_rows($result) > 0) {
+  while ($row = mysqli_fetch_assoc($result)) {
+    $datas[] = $row;
+  }
+}
+//to get all the data within a specific column
+foreach ($datas as $data) {
+echo $data['texts']. " ";
+}
+?>
+
+or 
+(//to get data per row
+foreach ($datas[0] as $data) {
+  echo $data;
+  } )
+
+  -------------------------------------------------------------
