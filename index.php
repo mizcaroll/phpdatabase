@@ -11,11 +11,11 @@ include_once 'includes/dbh.inc.php';
   <title>PHPdatabase</title>
 </head>
 <body>
+<form action="upload.php" method="POST" enctype="multipart/form-data">
+<input type="file" name="file">
+<button type="submit" name="submit">UPLOAD</button>
+</form>
 <?php
-//Multidimensional arrays
-$data = array(array(1, 2, 3), "Jackie", "Kefa");
-
-echo $data[0][1];
 
 ?>
 </body>
