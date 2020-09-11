@@ -381,4 +381,19 @@ elseif ($signupCheck == "success") {
 </body>
 </html>
 
----------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------HASHING AND DE-HASHING PASSWORDS---------------------
+
+<?php
+
+//hashing the users's input
+
+$input = "test13";
+$hashedPwdInDb = password_hash($input, PASSWORD_DEFAULT);
+
+//verifying that the hashed data in the db is the same as the user input. a result of boolean 1 is true. and vice versa
+
+echo password_verify($input, $hashedPwdInDb);
+
+?>
+
+--------------------------------------------------------------------------------------------------------------

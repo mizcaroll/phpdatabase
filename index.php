@@ -12,14 +12,12 @@ include_once 'includes/dbh.inc.php';
 </head>
 <body>
 <?php
-// echo "test123";
-// echo "<br>";
-// echo password_hash("test123", PASSWORD_DEFAULT);
 
-$input = "test13";
-$hashedPwdInDb = password_hash($input, PASSWORD_DEFAULT);
+$data = array("first", "second");
 
-echo password_verify($input, $hashedPwdInDb);
+array_push($data, "Jackie", 15, "Kefa");
+
+print_r($data);
 
 ?>
 </body>
