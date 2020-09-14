@@ -14,6 +14,7 @@ include_once 'includes/dbh.inc.php';
 <body>
 
 <form action="deletefile.php" method="POST">
+  <input type="text" name="filename" placeholder="Separate each name with a comma (,)">
 <button type="submit" name="submit">Delete File</button>
 </form>
 
