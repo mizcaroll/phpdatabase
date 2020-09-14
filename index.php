@@ -24,7 +24,12 @@ if (mysqli_num_rows($result) > 0) {
     while ($rowImg = mysqli_fetch_assoc($resultImg)) {
 echo "<div class='user-container'>";
 if ($rowImg['status'] == 0) {
-  echo "<img src='uploads/profile".$id.".jpg?'".mt_rand().">";
+  $filename = "uploads/profile".$id."*";
+  $fileinfo = glob($filename);
+  $fileext = explode(".", $fileinfo[0]);
+  $fileactualext = $fileext[1];
+
+  echo "<img src='uploads/profile".$id.".".$fileactualext."?".mt_rand()."'>";
 } else {
   echo "<img src='uploads/profiledefault.jpg'>";
 }
@@ -40,11 +45,15 @@ if (isset($_SESSION['id'])) {
   if ($_SESSION['id'] == 1) {
     echo "You are logged in as user #1";
   }
-  echo "<h2>Upload Profile Image</h2><br>
+  echo "<h3>Upload Profile Image</h3><br>
   <form action='upload.php' method='POST' enctype='multipart/form-data'>
   <input type='file' name='file'>
   <button type='submit' name='submit'>UPLOAD</button>
   </form>";
+  echo "<h3>Delete Profile Image</h3><br>
+  <form action='deleteprofile.php' method='POST'>
+  <button type='submit' name='submit'>DELETE</button>
+  </form><br><hr>";
 } else {
   echo "Login to Start!<hr><br>";
   echo "<form action='includes/signup3.inc.php' method='POST'> 
