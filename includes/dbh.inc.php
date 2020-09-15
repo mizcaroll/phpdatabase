@@ -3,7 +3,7 @@
 $dbServername = "localhost";
 $dbUsername = "root";
 $dbPassword = "";
-$dbName = "imgupload";
+$dbName = "phpsearch";
 
 $conn = mysqli_connect($dbServername, $dbUsername, $dbPassword, $dbName);
 if (!$conn) {

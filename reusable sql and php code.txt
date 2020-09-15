@@ -839,4 +839,129 @@ header("Location: index.php?deletesuccess");
 <button type="submit" name="submit">Delete File</button>
 </form>
 
-------------------------------------------------------------------------------------------------
+----------------------------------------------------------- SEARCHING FOR FILES USING GLOB FUNCTION (to delete them)----------------------------------------------------
+
+<?php
+$path = "uploads/*cat*";
+$fileinfo = glob($path);
+$fileactualname = $fileinfo[0];
+
+if (!unlink($fileactualname)) {
+echo "An error occurred while trying to delete the file!";
+} else {
+  //echo "File deleted successfully!";
+  header("Location: index.php?deletesuccess");
+}
+
+------------------------------------------------------------- PHP SEARCH FIELD CODE search.php (contains links to the article page) -----------------------------------------------------
+
+<?php
+include 'header.php';
+?>
+
+<h1>Search Page</h1>
+
+<div class="article-container">
+<?php
+if (isset($_POST['submitsearch'])) {
+  $search = mysqli_real_escape_string($conn, $_POST['search']);
+  $sql = "SELECT * FROM article WHERE a_title LIKE '%$search%'OR a_text LIKE '%$search%' or a_author LIKE '%$search%' or a_date LIKE '%$search%'";
+  $result = mysqli_query($conn, $sql);
+  $queryResult = mysqli_num_rows($result);
+
+  echo "There are ".$queryResult." results!";
+
+  if ($queryResult > 0) {
+while ($row = mysqli_fetch_assoc($result)) {
+  echo "<a href='article.php?title=".$row['a_title']."&date=".$row['a_date']."'><div class='article-box'>
+<h3>".$row['a_title']."</h3>
+<p>".$row['a_text']."</p>
+<p>".$row['a_date']."</p>
+<p>".$row['a_author']."</p>
+</div></a>";
+}
+  } else {
+    echo " There are no results matching your search";
+  }
+}
+?>
+</div>
+
+---------------------------------------------------------- PHP SEARCH FIELD CODE index.php (contains search input form and button) -----------------------------------------------------
+<?php
+include 'header.php';
+?>
+
+<form action="search.php" method="POST">
+<input type="text" name="search" placeholder="Search">
+<button type="submit" name="submitsearch">Search</button>
+</form>
+<h1>Home Page</h1>
+<h2>All Articles:</h2>
+<div class="article-container">
+<?php
+$sql = "SELECT * FROM article";
+$result = mysqli_query($conn, $sql);
+$queryResults = mysqli_num_rows($result);
+if ($queryResults > 0) {
+while ($row = mysqli_fetch_assoc($result)) {
+echo "<div class='article-box'>
+<h3>".$row['a_title']."</h3>
+<p>".$row['a_text']."</p>
+<p>".$row['a_date']."</p>
+<p>".$row['a_author']."</p>
+</div>";
+}
+}
+?>
+</div>
+</body>
+</html>
+
+--------------------------------------------------------- PHP SEARCH FIELD CODE article.php (redirects to specific article chosen incase of multiple results)
+------------------------------------------------------
+<?php
+include 'header.php';
+?>
+
+<h1>Article Page</h1>
+<div class="article-container">
+<?php
+$title = mysqli_real_escape_string($conn, $_GET['title']);
+$date = mysqli_real_escape_string($conn, $_GET['date']);
+
+$sql = "SELECT * FROM article WHERE a_title='$title' AND a_date='$date'";
+$result = mysqli_query($conn, $sql);
+$queryResults = mysqli_num_rows($result);
+if ($queryResults > 0) {
+while ($row = mysqli_fetch_assoc($result)) {
+echo "<div class='article-box'>
+<h3>".$row['a_title']."</h3>
+<p>".$row['a_text']."</p>
+<p>".$row['a_date']."</p>
+<p>".$row['a_author']."</p>
+</div>";
+}
+}
+?>
+</div>
+</body>
+</html>
+
+------------------------------------------------------------  PHP SEARCH FIELD CODE header.php (contains the styling and includes database connection for relevant pages) ------------------------------------------------------
+
+<?php
+include 'includes/dbh.inc.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" rel="stylesheet" href="style2.css">
+  <title>PHP Search Field</title>
+</head>
+<body>
+
+----------------------------------------------------------
+

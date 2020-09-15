@@ -2,15 +2,13 @@
 include 'header.php';
 ?>
 
-<form action="search.php" method="POST">
-<input type="text" name="search" placeholder="Search">
-<button type="submit" name="submitsearch">Search</button>
-</form>
-<h1>Home Page</h1>
-<h2>All Articles:</h2>
+<h1>Article Page</h1>
 <div class="article-container">
 <?php
-$sql = "SELECT * FROM article";
+$title = mysqli_real_escape_string($conn, $_GET['title']);
+$date = mysqli_real_escape_string($conn, $_GET['date']);
+
+$sql = "SELECT * FROM article WHERE a_title='$title' AND a_date='$date'";
 $result = mysqli_query($conn, $sql);
 $queryResults = mysqli_num_rows($result);
 if ($queryResults > 0) {
