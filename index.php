@@ -1,30 +1,25 @@
-<?php
-include 'header.php';
-?>
-<h1>Home Page</h1> <br>
-<form action="search.php" method="POST">
-<input type="text" name="search" placeholder="Search">
-<button type="submit" name="submitsearch">Search</button>
-</form> 
-<h2>All Articles:</h2>
-<div class="article-container">
-<?php
-$sql = "SELECT * FROM article";
-$result = mysqli_query($conn, $sql);
-$queryResults = mysqli_num_rows($result);
-if ($queryResults > 0) {
-while ($row = mysqli_fetch_assoc($result)) {
-echo "<div class='article-box'>
-<h3>".$row['a_title']."</h3>
-<p>".$row['a_text']."</p>
-<p>".$row['a_date']."</p>
-<p>".$row['a_author']."</p>
-</div>";
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" rel="stylesheet" href="style3.css">
+  <title>Contact Form</title>
+</head>
+<body>
+<main>
+<h2>SEND E-MAIL</h2>
+<form class="contact-form" action="contactform.php" method="POST">
+  <input type="text" name="name" placeholder="Full name">
+  <input type="text" name="mail" placeholder="Your e-mail">
+  <input type="text" name="subject" placeholder="Subject">
+  <textarea name="message" placeholder="Message"></textarea>
+  <button type="submit" name="submit">SEND MAIL</button>
+</form>
 
-}
-?>
-</div>
+
+</main>
+
 
 </body>
 </html>
