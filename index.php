@@ -1,12 +1,11 @@
 <?php
 include 'header.php';
 ?>
-
+<h1>Home Page</h1> <br>
 <form action="search.php" method="POST">
 <input type="text" name="search" placeholder="Search">
 <button type="submit" name="submitsearch">Search</button>
-</form>
-<h1>Home Page</h1>
+</form> 
 <h2>All Articles:</h2>
 <div class="article-container">
 <?php
