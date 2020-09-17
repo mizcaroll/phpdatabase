@@ -1073,4 +1073,16 @@ echo preg_match("/^M.*.$/", $string);
 
 ?>
 
-----------------------------------------------------------
+---------------------------------------------------------- CREATING A RANDOM STRING - generating a key ----------------------------------------------------
+
+<?php
+function keyGen() {
+$KeyLength = 8;
+$str = "123456789abcdefghijklmnopqrstuvwxyz()/$";
+$randStr = substr(str_shuffle($str), 0, $KeyLength);
+return $randStr;
+} 
+echo keyGen();
+?>
+
+-------------------------------------------------------

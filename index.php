@@ -8,11 +8,13 @@
 </head>
 <body>
 <?php
-//NB reg expressions are used e.g in php error handling to check if the user entered the right characters inside the input
-
-$string = "My name is Caroline. My mum named me Caroline.";
-echo preg_match("/^M.*.$/", $string);
-
+function keyGen() {
+$KeyLength = 8;
+$str = "123456789abcdefghijklmnopqrstuvwxyz()/$";
+$randStr = substr(str_shuffle($str), 0, $KeyLength);
+return $randStr;
+} 
+echo keyGen();
 ?>
 </body>
 </html>
