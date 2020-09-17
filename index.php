@@ -7,20 +7,12 @@
   <title>Contact Form</title>
 </head>
 <body>
-<main>
-<h2>SEND E-MAIL</h2>
-<form class="contact-form" action="contactform.php" method="POST">
-  <input type="text" name="name" placeholder="Full name">
-  <input type="text" name="mail" placeholder="Your e-mail">
-  <input type="text" name="subject" placeholder="Subject">
-  <textarea name="message" placeholder="Message"></textarea>
-  <button type="submit" name="submit">SEND MAIL</button>
-</form>
+<?php
+$string = "My name is Caroline. My mum named me Caroline.";
+$string2 = preg_replace("/Caroline/", "Jackie", $string);
+echo $string2;
 
-
-</main>
-
-
+?>
 </body>
 </html>
 
