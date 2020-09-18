@@ -1073,7 +1073,7 @@ echo preg_match("/^M.*.$/", $string);
 
 ?>
 
----------------------------------------------------------- CREATING A RANDOM STRING - generating a key ----------------------------------------------------
+---------------------------------------------------------- CREATING A RANDOM STRING - generating a key manually. NB the string generated in this case is NOT unique. ----------------------------------------------------
 
 <?php
 function keyGen() {
@@ -1085,4 +1085,44 @@ return $randStr;
 echo keyGen();
 ?>
 
--------------------------------------------------------
+------------------------------------------------------- GENERATING A KEY FROM PHP UNIQID FUNCTION (creates an unique key but not entirely secure for passwords) index.php ---------------------------------------------------------------------------------------------------------
+<?php
+function keyGen()
+ $randStr = uniqid('Jackie');
+return $randStr;
+ }
+echo keyGen();
+?>
+
+-------------------------------------------------------- SUPER UNIQUE KEY GENERATING PHP CODE (checks if data in the database [e.g password row] already contains the same unique string)- index.php -----------------------------------------------------
+<?php
+$conn = mysqli_connect("localhost", "root", "", "phpkeys");
+function checkKeys($conn, $randStr) {
+  $sql = "SELECT * FROM keystring";
+  $result = mysqli_query($conn, $sql);
+  while ($row = mysqli_fetch_assoc($result)) {
+if ($row['keystringKey'] == $randStr) {
+$keyExists = true;
+break;
+} else  {
+  $keyExists = false;
+}
+  }
+  return $keyExists;
+}
+function keyGen($conn) {
+  $KeyLength = 8;
+  $str = "123456789abcdefghijklmnopqrstuvwxyz()/$";
+  $randStr = substr(str_shuffle($str), 0, $KeyLength);
+  $checkKey = checkKeys($conn, $randStr);
+  while ($checkKey == true) {
+    $randStr = substr(str_shuffle($str), 0, $KeyLength);
+    $checkKey = checkKeys($conn, $randStr);
+  }
+  return $randStr;
+}
+echo keyGen($conn);
+
+?>
+
+---------------------------------------------------------- 
